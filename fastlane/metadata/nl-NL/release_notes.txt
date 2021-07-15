@@ -1,0 +1,1 @@
+- Bewerkingsmodus verplaatst naar een handeling met lang indrukken en de nieuwe notitiebalk verwijderd

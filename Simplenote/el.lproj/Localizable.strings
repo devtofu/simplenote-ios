@@ -15,11 +15,20 @@
 /* Number of failed entries entering in passcode */
 "%i Failed Passcode Attempts" = "%i αποτυχημένες απόπειρες συνθηματικού";
 
+/* Note trashed notification */
+"%i Note Trashed" = "%i Note Trashed";
+
+/* Notes trashed notification */
+"%i Notes Trashed" = "%i Notes Trashed";
+
 /* Count of interlink references to a note */
 "%i Reference" = "%i Reference";
 
 /* Count of interlink references to a note */
 "%i References" = "%i References";
+
+/* Count of currently selected notes */
+"%i Selected" = "%i Selected";
 
 /* Password Requirement: Length */
 "- Minimum of 8 characters" = "- Minimum of 8 characters";
@@ -77,6 +86,9 @@
 /* Sign in error message */
 "An error was encountered while signing in." = "An error was encountered while signing in.";
 
+/* Engine URL Message */
+"AppEngine Endpoints" = "AppEngine Endpoints";
+
 /* No comment provided by engineer. */
 "Appearance" = "Appearance";
 
@@ -92,6 +104,9 @@
 /* User Authenticated */
 "Authenticated" = "Authenticated";
 
+/* Engine URL Message */
+"Authentication Endpoints" = "Authentication Endpoints";
+
 /* The Simplenote blog */
 "Blog" = "Blog";
 
@@ -99,6 +114,8 @@
 "By creating an account you agree to our" = "By creating an account you agree to our";
 
 /* Cancel Action
+   Cancel action button
+   Cancel button title
    Cancellation button of deletion confirmation message for a tag.
    Dismissing an interface
    PinLock screen \"cancel\" button
@@ -126,7 +143,7 @@
 /* Opens the Collaborate UI */
 "Collaborate" = "Συνεργασία";
 
-/* No comment provided by engineer. */
+/* Alert title that collaboration has moved */
 "Collaboration has moved" = "Collaboration has moved";
 
 /* Noun - collaborators are other Simplenote users who you chose to share a note with */
@@ -150,6 +167,9 @@
 
 /* Copies the Note's Public Link */
 "Copy Link" = "Copy Link";
+
+/* Copy link action */
+"Copy link" = "Copy link";
 
 /* Rating view - initial - could be better button */
 "Could be better" = "Could be better";
@@ -206,17 +226,23 @@
 /* PinLock screen \"delete\" button */
 "Delete" = "Delete";
 
+/* Delete a note from trash */
+"Delete Note" = "Delete Note";
+
 /* Verb: Delete notes and log out of the app */
 "Delete Notes" = "Delete Notes";
 
 /* Confirmation button of deletion confirmation message for a tag. */
 "Delete Tag" = "Delete Tag";
 
+/* Deselect all Button Label */
+"Deselect All" = "Deselect All";
+
 /* Title displayed in the extended diagnostics UI */
 "Diagnostics" = "Diagnostics";
 
 /* Footer -> Sign up verification screen. Parameter: %1$@ - support email address */
-"Didn't get an email? You may already have an account. Contact %1$@ for help." = "Didn't get an email? You may already have an account. Contact %1$@ for help.";
+"Didn't get an email? There may already be an account associated with this email address. Contact %1$@ for help." = "Didn't get an email? There may already be an account associated with this email address. Contact %1$@ for help.";
 
 /* Markdown Accessibility Hint */
 "Disable Markdown formatting" = "Disable Markdown formatting";
@@ -239,7 +265,8 @@
    Done toolbar button */
 "Done" = "OK";
 
-/* Edit Tags Action: Visible in the Tags List */
+/* Edit button title
+   Edit Tags Action: Visible in the Tags List */
 "Edit" = "Edit";
 
 /* Email TextField Placeholder */
@@ -323,6 +350,9 @@
 /* Theme: Light */
 "Light" = "Light";
 
+/* Link Copied alert */
+"Link copied" = "Link copied";
+
 /* Setting for when the passcode lock should enable */
 "Lock Timeout" = "Lock Timeout";
 
@@ -368,6 +398,9 @@
 /* Sort Mode: Modified Date, ascending */
 "Modified: Oldest" = "Modified: Oldest";
 
+/* Accessibility hint for trash selected notes button */
+"Move selected notes to trash" = "Move selected notes to trash";
+
 /* Delete Action
    Deletes a note */
 "Move to Trash" = "Move to Trash";
@@ -406,10 +439,14 @@
 /* Message shown in note list when no notes are untagged */
 "No untagged notes" = "No untagged notes";
 
+/* Note trashed notification */
+"Note Trashed" = "Note Trashed";
+
 /* Notes Header (Search Mode) */
 "Notes" = "Σημειώσεις";
 
-/* Closes alert controller for spinner on About view
+/* Alert confirmation button title
+   Closes alert controller for spinner on About view
    Dismisses an AlertController */
 "OK" = "OK";
 
@@ -483,8 +520,14 @@
 /* Publishes a Note to the Web */
 "Publish" = "Αποστολή";
 
+/* Notice up succesful publishing */
+"Publish Successful" = "Publish Successful";
+
 /* Publish Accessibility Hint */
 "Publish note" = "Δημοσίευση";
+
+/* Notice of publishing action */
+"Publishing note..." = "Publishing note...";
 
 /* Indicates the Note is being published */
 "Publishing..." = "Δημοσίευση...";
@@ -519,7 +562,8 @@
 /* Response Title */
 "Response" = "Response";
 
-/* Restore a note to a previous version */
+/* Restore a note from trash
+   Restore a note to a previous version */
 "Restore Note" = "Ανάκτηση σημείωσης";
 
 /* Title -> Review you account screen */
@@ -540,6 +584,13 @@
 /* No comment provided by engineer. */
 "Security" = "Security";
 
+/* Select multiple notes at once */
+"Select" = "Select";
+
+/* Select all Button Label
+   Select all button title */
+"Select All" = "Select All";
+
 /* Accessibility label describing a slider used to reset the current note to a previous version */
 "Select a Version" = "Select a Version";
 
@@ -548,6 +599,9 @@
 
 /* Rating view - disliked - send feedback button */
 "Send feedback" = "Send feedback";
+
+/* Setup a passcode action button */
+"Set up Passcode" = "Set up Passcode";
 
 /* Settings button
    Title of options screen */
@@ -563,7 +617,7 @@
 /* Shares a note */
 "Share..." = "Share...";
 
-/* No comment provided by engineer. */
+/* Alert message that collaboration has moved */
 "Sharing notes is now accessed through the action menu from the toolbar." = "Sharing notes is now accessed through the action menu from the toolbar.";
 
 /* UI region to the left of the note list which shows all of a users tags */
@@ -605,6 +659,9 @@
 /* Tags List Header */
 "Tags" = "Tags";
 
+/* Accessibility hint for the select/deselect all button */
+"Tap button to select or deselect all notes" = "Tap button to select or deselect all notes";
+
 /* Terms of Service Legend *SUFFIX*: Concatenated with a space, after the PREFIX, and printed in blue */
 "Terms and Conditions" = "Terms and Conditions";
 
@@ -623,6 +680,9 @@
 /* Simplenote Themes */
 "Themes" = "Themes";
 
+/* Prompt to setup passcode before biomtery lock. Parameters: %1$@ - biometry type (Face ID or Touch ID */
+"To enable %1$@, you must have a passcode setup first." = "To enable %1$@, you must have a passcode setup first.";
+
 /* Touch ID reason/explanation */
 "To unlock the application" = "To unlock the application";
 
@@ -638,12 +698,18 @@
 /* Offer to enable Touch ID support if available and passcode is on. */
 "Touch ID" = "Touch ID";
 
+/* Move selected notes to trash */
+"Trash Notes" = "Trash Notes";
+
 /* Title: Trash Tag is selected
    Trash filter button */
 "Trash-noun" = "Διαγεγραμμένα";
 
 /* Prompt when disabling passcode */
 "Turn off Passcode" = "Απενεργοποίηση συνθηματικού";
+
+/* Undo action */
+"Undo" = "Undo";
 
 /* Unpins a note */
 "Unpin" = "Unpin";
@@ -653,6 +719,12 @@
 
 /* Publish Accessibility Hint */
 "Unpublish note" = "Δημοσίευση σημείωσης";
+
+/* Notice of publishing unsuccessful */
+"Unpublish successful" = "Unpublish successful";
+
+/* Notice of unpublishing action */
+"Unpublishing note..." = "Unpublishing note...";
 
 /* Indicates the Note is being unpublished */
 "Unpublishing..." = "Ακύρωση δημοσίευσης...";
@@ -728,6 +800,9 @@
 
 /* Search Operator for tags. Please preserve the semicolons when translating! */
 "tag:" = "tag:";
+
+/* Warning Title */
+"⚠️ Important" = "";
 
 /* Indicates that Extended Debugging has been enabled */
 "🐞 Debug Enabled 🐞" = "";

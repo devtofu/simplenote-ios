@@ -39,11 +39,13 @@ class NoteList {
         guard !NoteList.isAllNotesListOpen() else { return }
         print(">>> Opening \"All Notes\"")
         Sidebar.open()
-        app.tables.staticTexts[UID.Button.allNotes].tap()
+        let allNotesButton = app.tables.staticTexts[UID.Button.allNotes]
+        guard allNotesButton.waitForExistence(timeout: averageLoadTimeout) else { return }
+        allNotesButton.tap()
     }
 
     class func addNoteTap() {
-        app.navigationBars.buttons[UID.Button.newNote].tap()
+        app.buttons[UID.Button.newNote].tap()
     }
 
     static func createNoteThenLeaveEditor(_ note: NoteData, usingPaste: Bool = false) {
@@ -118,7 +120,7 @@ class NoteList {
         }
 
         searchField.typeText(text)
-        sleep(2)
+        sleep(5)
     }
 
     class func searchCancel() {

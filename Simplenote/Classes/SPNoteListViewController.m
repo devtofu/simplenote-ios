@@ -28,7 +28,6 @@
 @property (nonatomic, strong) NSTimer                               *searchTimer;
 
 @property (nonatomic, strong) SPBlurEffectView                      *navigationBarBackground;
-@property (nonatomic, strong) UIBarButtonItem                       *addButton;
 @property (nonatomic, strong) UIBarButtonItem                       *sidebarButton;
 
 @property (nonatomic, strong) SearchDisplayController               *searchController;
@@ -89,14 +88,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.searchController hideNavigationBarIfNecessary];
 
+    [self refershNavigationButtons];
     if (!self.navigatingUsingKeyboard) {
         [self.tableView deselectSelectedRowAnimated:YES];
         self.selectedNote = nil;
     }
 
     self.navigatingUsingKeyboard = NO;
+    [self refreshStyle];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -229,13 +229,34 @@
 
     // Refresh the SearchBar's UI
     [self.searchBar applySimplenoteStyle];
+
+    self.navigationController.toolbar.translucent = false;
+    self.navigationController.toolbar.barTintColor = [UIColor simplenoteSortBarBackgroundColor];
+}
+
+- (void)refershNavigationButtons {
+    [self refreshNavigationBarLabels];
+    [self updateNavigationBar];
+    [self refreshNavigationControllerToolbar];
+}
+
+- (void)refreshNavigationControllerToolbar
+{
+    [self.navigationController setToolbarHidden:!self.isEditing animated:YES];
+    [self configureNavigationToolbarButton];
 }
 
 - (void)updateNavigationBar {
-    UIBarButtonItem *rightButton = (self.isDeletedFilterActive) ? self.emptyTrashButton : self.addButton;
+    // TODO: When multi select is added to iPad, revist the conditionals here
+    [self.navigationController setNavigationBarHidden: self.isSearchActive animated:YES];
+    
+    UIBarButtonItem *addOrEditButton = self.isEditing ? self.editButtonItem : self.addButton;
+    UIBarButtonItem *rightButton = (self.isDeletedFilterActive) ? self.emptyTrashButton : addOrEditButton;
+
+    UIBarButtonItem *leftButton = self.isEditing ? self.selectAllButton : self.sidebarButton;
 
     [self.navigationItem setRightBarButtonItem:rightButton animated:YES];
-    [self.navigationItem setLeftBarButtonItem:self.sidebarButton animated:YES];
+    [self.navigationItem setLeftBarButtonItem:leftButton animated:YES];
 }
 
 
@@ -245,6 +266,7 @@
     NSAssert(_addButton == nil, @"_addButton is already initialized!");
     NSAssert(_sidebarButton == nil, @"_sidebarButton is already initialized!");
     NSAssert(_emptyTrashButton == nil, @"_emptyTrashButton is already initialized!");
+    NSAssert(_selectAllButton == nil, @"_selectAllButton is already initialized!");
 
     /// Button: New Note
     ///
@@ -277,6 +299,22 @@
     self.emptyTrashButton.isAccessibilityElement = YES;
     self.emptyTrashButton.accessibilityLabel = NSLocalizedString(@"Empty trash", @"Remove all notes from the trash");
     self.emptyTrashButton.accessibilityHint = NSLocalizedString(@"Remove all notes from trash", nil);
+
+    self.trashButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithName:UIImageNameTrash]
+                                                        style:UIBarButtonItemStylePlain
+                                                       target:self
+                                                       action:@selector(trashSelectedNotes)];
+    self.trashButton.isAccessibilityElement = YES;
+    self.trashButton.accessibilityLabel = NSLocalizedString(@"Trash Notes", @"Move selected notes to trash");
+    self.trashButton.accessibilityHint = NSLocalizedString(@"Move selected notes to trash", @"Accessibility hint for trash selected notes button");
+
+    NSString *selectAllTitle = NSLocalizedString(@"Select All", @"Select all button title");
+    self.selectAllButton = [[UIBarButtonItem alloc] initWithTitle: selectAllTitle
+                                                           style:UIBarButtonItemStylePlain
+                                                           target:self
+                                                           action:@selector(selectAllWasTapped)];
+
+    [self refreshEditButtonTitle];
 }
 
 - (void)configureNavigationBarBackground {
@@ -299,6 +337,7 @@
 
     self.searchBar.placeholder = NSLocalizedString(@"Search notes or tags", @"SearchBar's Placeholder Text");
     [self.searchBar applySimplenoteStyle];
+    [self.searchBar refreshPlaceholderStyleWithSearchEnabled:YES];
 
     self.searchController.searchBar.accessibilityIdentifier = @"search-bar";
 }
@@ -312,7 +351,7 @@
 
 - (void)sidebarButtonAction:(id)sender {
     
-    [self.tableView setEditing:NO];
+    [self setEditing:NO];
 
     [SPTracker trackSidebarButtonPresed];
     [[[SPAppDelegate sharedDelegate] sidebarViewController] toggleSidebar];
@@ -346,6 +385,9 @@
     [self.notesListController beginSearch];
     [self reloadTableData];
     [self refreshTitle];
+    [self refershNavigationButtons];
+    [self.editButtonItem setEnabled:NO];
+    [self setEditing:NO animated:YES];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(SearchDisplayController *)controller
@@ -361,8 +403,9 @@
     /// Ref. https://github.com/Automattic/simplenote-ios/issues/777
     ///
     [self.notesListController endSearch];
+    [self refershNavigationButtons];
     [self update];
-
+    [self.editButtonItem setEnabled:YES];
 }
 
 
@@ -475,7 +518,6 @@
     [self displayPlaceholdersIfNeeded];
 }
 
-
 #pragma mark - NoteListController
 
 - (void)update
@@ -490,7 +532,7 @@
     self.tableView.allowsSelection = !isTrashOnScreen;
     
     [self displayPlaceholdersIfNeeded];
-    [self updateNavigationBar];
+    [self refershNavigationButtons];
     [self hideRatingViewIfNeeded];
 }
 

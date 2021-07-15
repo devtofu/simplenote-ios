@@ -510,9 +510,11 @@ extension SPNoteEditorViewController {
         SPTracker.trackEditorNoteDeleted()
         SPObjectManager.shared().trashNote(note)
         CSSearchableIndex.default().deleteSearchableNote(note)
-        NoticeController.shared.present(NoticeFactory.noteTrashed(note, onUndo: {
+        NoticeController.shared.present(NoticeFactory.noteTrashed(onUndo: {
             SPObjectManager.shared().restoreNote(note)
+            SPTracker.trackPreformedNoticeAction(ofType: .noteTrashed, noticeType: .undo)
         }))
+        SPTracker.trackPresentedNotice(ofType: .noteTrashed)
     }
 
     @objc
@@ -819,6 +821,8 @@ extension SPNoteEditorViewController {
         noteEditorTextView.keyboardAppearance = .simplenoteKeyboardAppearance
         noteEditorTextView.checklistsFont = .preferredFont(forTextStyle: .headline)
         noteEditorTextView.checklistsTintColor = .simplenoteNoteBodyPreviewColor
+        navigationController?.toolbar.isTranslucent = false
+        navigationController?.toolbar.barTintColor = .simplenoteSortBarBackgroundColor
     }
 
     private func refreshTagsEditor() {
@@ -842,6 +846,12 @@ extension SPNoteEditorViewController {
             .font: headlineFont,
             .foregroundColor: textColor,
         ]
+    }
+
+    @objc
+    func refreshSearchHighlight() {
+        noteEditorTextView.clearHighlights(false)
+        highlightSearchResult(at: highlightedSearchResultIndex, animated: false)
     }
 
     private var backgroundColor: UIColor {

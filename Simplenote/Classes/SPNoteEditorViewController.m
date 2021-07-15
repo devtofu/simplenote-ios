@@ -55,7 +55,6 @@ CGFloat const SPSelectedAreaPadding = 20;
 @property (nonatomic, strong) NSMutableDictionary       *noteVersionData;
 
 // Search
-@property (nonatomic, assign) NSInteger                 highlightedSearchResultIndex;
 @property (nonatomic, strong) NSArray                   *searchResultRanges;
 @property (nonatomic, strong) SearchQuery               *searchQuery;
 
@@ -96,8 +95,8 @@ CGFloat const SPSelectedAreaPadding = 20;
 
     [self configureNavigationBarItems];
     [self configureNavigationBarBackground];
+    [self configureNavigationControllerToolbar];
     [self configureRootView];
-    [self configureSearchToolbar];
     [self configureLayout];
     [self configureTagListViewController];
     [self configureInterlinksProcessor];
@@ -117,12 +116,10 @@ CGFloat const SPSelectedAreaPadding = 20;
 {
     [super viewWillAppear:animated];
 
-    [self setupNavigationController];
     [self highlightSearchResultsIfNeeded];
+    [self configureNavigationController];
     [self startListeningToKeyboardNotifications];
-
     [self refreshNavigationBarButtons];
-
     // Async here to make sure all the frames are correct
     dispatch_async(dispatch_get_main_queue(), ^{
         [self restoreScrollPosition];
@@ -132,7 +129,6 @@ CGFloat const SPSelectedAreaPadding = 20;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
     self.userActivity = [NSUserActivity openNoteActivityFor:self.note];
     [self ensureEditorIsFirstResponder];
 }
@@ -143,7 +139,7 @@ CGFloat const SPSelectedAreaPadding = 20;
     self.navigationBarBackground = [SPBlurEffectView navigationBarBlurView];
 }
 
-- (void)setupNavigationController
+- (void)configureNavigationController
 {
     // Note: Our navigationBar *may* be hidden, as per SPSearchController in the Notes List
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -210,7 +206,6 @@ CGFloat const SPSelectedAreaPadding = 20;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.navigationController setToolbarHidden:YES animated:YES];
 
     [self saveScrollPosition];
 }
@@ -226,6 +221,7 @@ CGFloat const SPSelectedAreaPadding = 20;
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self refreshTagEditorOffsetWithCoordinator:coordinator];
     [self refreshInterlinkLookupWithCoordinator:coordinator];
+    [self refreshSearchHighlightIfNeededWithCoordinator:coordinator];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -261,6 +257,17 @@ CGFloat const SPSelectedAreaPadding = 20;
 
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
         [self.tagListViewController scrollEntryFieldToVisibleAnimated:NO];
+    } completion:nil];
+}
+
+- (void)refreshSearchHighlightIfNeededWithCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    if (!self.searching) {
+        return;
+    }
+
+    [coordinator animateAlongsideTransitionInView:nil animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self refreshSearchHighlight];
     } completion:nil];
 }
 
@@ -302,6 +309,13 @@ CGFloat const SPSelectedAreaPadding = 20;
     UIBarButtonItem *detailButton = [[UIBarButtonItem alloc] initWithCustomView:self.searchDetailLabel];
     
     [self setToolbarItems:@[self.doneSearchButton, flexibleSpace, detailButton, flexibleSpaceTwo, self.prevSearchButton, self.nextSearchButton] animated:NO];
+}
+
+- (void)configureNavigationControllerToolbar
+{
+    if (self.searching) {
+        [self configureSearchToolbar];
+    }
 }
 
 - (void)ensureNoteIsVisibleInList
@@ -574,7 +588,9 @@ CGFloat const SPSelectedAreaPadding = 20;
     
     self.searching = NO;
 
-    [self.navigationController setToolbarHidden:YES animated:YES];
+    [self configureNavigationController];
+    [self configureNavigationControllerToolbar];
+
     self.searchDetailLabel.text = nil;
 }
 

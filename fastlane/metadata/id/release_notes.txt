@@ -1,1 +1,1 @@
-- VoiceOver now reads note contextual actions names correctly
+- Mode edit dipindahkan ke aksi tekan lama dan bilah catatan baru dihapus

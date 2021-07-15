@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-16 11:54:38+0000 */
+/* Translation-Revision-Date: 2021-06-29 11:32:20+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/2.4.0-alpha */
 /* Language: de */
@@ -15,11 +15,20 @@
 /* Number of failed entries entering in passcode */
 "%i Failed Passcode Attempts" = "%i fehlgeschlagene Passcode-Versuche";
 
+/* Note trashed notification */
+"%i Note Trashed" = "%i Notiz in den Papierkorb verschoben";
+
+/* Notes trashed notification */
+"%i Notes Trashed" = "%i Notizen in den Papierkorb verschoben";
+
 /* Count of interlink references to a note */
 "%i Reference" = "%i Referenz";
 
 /* Count of interlink references to a note */
 "%i References" = "%i Referenzen";
+
+/* Count of currently selected notes */
+"%i Selected" = "%i Ausgewählt";
 
 /* Password Requirement: Length */
 "- Minimum of 8 characters" = "– Es muss mindestens 8 Zeichen lang sein.";
@@ -77,6 +86,9 @@
 /* Sign in error message */
 "An error was encountered while signing in." = "Bei der Anmeldung ist ein Fehler aufgetreten.";
 
+/* Engine URL Message */
+"AppEngine Endpoints" = "AppEngine-Endpunkte";
+
 /* No comment provided by engineer. */
 "Appearance" = "Design";
 
@@ -92,6 +104,9 @@
 /* User Authenticated */
 "Authenticated" = "Authentifiziert";
 
+/* Engine URL Message */
+"Authentication Endpoints" = "Authentifizierungs-Endpunkte";
+
 /* The Simplenote blog */
 "Blog" = "Blog";
 
@@ -99,6 +114,8 @@
 "By creating an account you agree to our" = "Indem du ein Konto erstellst, stimmst du Folgendem zu:";
 
 /* Cancel Action
+   Cancel action button
+   Cancel button title
    Cancellation button of deletion confirmation message for a tag.
    Dismissing an interface
    PinLock screen \"cancel\" button
@@ -126,7 +143,7 @@
 /* Opens the Collaborate UI */
 "Collaborate" = "Zusammenarbeiten";
 
-/* No comment provided by engineer. */
+/* Alert title that collaboration has moved */
 "Collaboration has moved" = "Zusammenarbeit wurde verschoben";
 
 /* Noun - collaborators are other Simplenote users who you chose to share a note with */
@@ -150,6 +167,9 @@
 
 /* Copies the Note's Public Link */
 "Copy Link" = "Link kopieren";
+
+/* Copy link action */
+"Copy link" = "Link kopieren";
 
 /* Rating view - initial - could be better button */
 "Could be better" = "Könnte besser sein";
@@ -206,17 +226,23 @@
 /* PinLock screen \"delete\" button */
 "Delete" = "Löschen";
 
+/* Delete a note from trash */
+"Delete Note" = "Notiz löschen";
+
 /* Verb: Delete notes and log out of the app */
 "Delete Notes" = "Notizen löschen";
 
 /* Confirmation button of deletion confirmation message for a tag. */
 "Delete Tag" = "Schlagwort löschen";
 
+/* Deselect all Button Label */
+"Deselect All" = "Alle abwählen";
+
 /* Title displayed in the extended diagnostics UI */
 "Diagnostics" = "Diagnose";
 
 /* Footer -> Sign up verification screen. Parameter: %1$@ - support email address */
-"Didn't get an email? You may already have an account. Contact %1$@ for help." = "Du hast keine E-Mail bekommen? Vielleicht hast du schon ein Konto. Wende dich für Unterstützung an %1$@.";
+"Didn't get an email? There may already be an account associated with this email address. Contact %1$@ for help." = "Du hast keine E-Mail bekommen? Mit dieser E-Mail-Adresse ist vielleicht schon ein Konto verknüpft. Wende dich an %1$@, um Unterstützung zu erhalten.";
 
 /* Markdown Accessibility Hint */
 "Disable Markdown formatting" = "Markdown-Formatierung deaktivieren";
@@ -239,7 +265,8 @@
    Done toolbar button */
 "Done" = "Fertig";
 
-/* Edit Tags Action: Visible in the Tags List */
+/* Edit button title
+   Edit Tags Action: Visible in the Tags List */
 "Edit" = "Bearbeiten";
 
 /* Email TextField Placeholder */
@@ -323,6 +350,9 @@
 /* Theme: Light */
 "Light" = "Hell";
 
+/* Link Copied alert */
+"Link copied" = "Link kopiert";
+
 /* Setting for when the passcode lock should enable */
 "Lock Timeout" = "Sperrtimeout";
 
@@ -368,6 +398,9 @@
 /* Sort Mode: Modified Date, ascending */
 "Modified: Oldest" = "Geändert: Älteste";
 
+/* Accessibility hint for trash selected notes button */
+"Move selected notes to trash" = "Verschiebe die ausgewählten Notizen in den Papierkorb";
+
 /* Delete Action
    Deletes a note */
 "Move to Trash" = "In Papierkorb verschieben";
@@ -406,10 +439,14 @@
 /* Message shown in note list when no notes are untagged */
 "No untagged notes" = "Keine nicht markierten Notizen";
 
+/* Note trashed notification */
+"Note Trashed" = "Notiz in den Papierkorb verschoben";
+
 /* Notes Header (Search Mode) */
 "Notes" = "Notizen";
 
-/* Closes alert controller for spinner on About view
+/* Alert confirmation button title
+   Closes alert controller for spinner on About view
    Dismisses an AlertController */
 "OK" = "OK";
 
@@ -483,8 +520,14 @@
 /* Publishes a Note to the Web */
 "Publish" = "Veröffentlichen";
 
+/* Notice up succesful publishing */
+"Publish Successful" = "Veröffentlichung erfolgreich";
+
 /* Publish Accessibility Hint */
 "Publish note" = "Notiz veröffentlichen";
+
+/* Notice of publishing action */
+"Publishing note..." = "Notiz wird veröffentlicht …";
 
 /* Indicates the Note is being published */
 "Publishing..." = "Veröffentlichung läuft…";
@@ -519,7 +562,8 @@
 /* Response Title */
 "Response" = "Antwort";
 
-/* Restore a note to a previous version */
+/* Restore a note from trash
+   Restore a note to a previous version */
 "Restore Note" = "Notiz wiederherstellen";
 
 /* Title -> Review you account screen */
@@ -540,6 +584,13 @@
 /* No comment provided by engineer. */
 "Security" = "Sicherheit";
 
+/* Select multiple notes at once */
+"Select" = "Auswählen";
+
+/* Select all Button Label
+   Select all button title */
+"Select All" = "Alle auswählen";
+
 /* Accessibility label describing a slider used to reset the current note to a previous version */
 "Select a Version" = "Wähle eine Version aus";
 
@@ -548,6 +599,9 @@
 
 /* Rating view - disliked - send feedback button */
 "Send feedback" = "Feedback senden";
+
+/* Setup a passcode action button */
+"Set up Passcode" = "Zugangscode einrichten";
 
 /* Settings button
    Title of options screen */
@@ -563,7 +617,7 @@
 /* Shares a note */
 "Share..." = "Teilen …";
 
-/* No comment provided by engineer. */
+/* Alert message that collaboration has moved */
 "Sharing notes is now accessed through the action menu from the toolbar." = "Du kannst Notizen jetzt über das Aktionsmenü in der Toolbar teilen.";
 
 /* UI region to the left of the note list which shows all of a users tags */
@@ -605,6 +659,9 @@
 /* Tags List Header */
 "Tags" = "Schlagwörter";
 
+/* Accessibility hint for the select/deselect all button */
+"Tap button to select or deselect all notes" = "Tippe auf den Button, um alle Notizen aus- oder abzuwählen";
+
 /* Terms of Service Legend *SUFFIX*: Concatenated with a space, after the PREFIX, and printed in blue */
 "Terms and Conditions" = "Geschäftsbedingungen";
 
@@ -623,6 +680,9 @@
 /* Simplenote Themes */
 "Themes" = "Themes";
 
+/* Prompt to setup passcode before biomtery lock. Parameters: %1$@ - biometry type (Face ID or Touch ID */
+"To enable %1$@, you must have a passcode setup first." = "Um %1$@ zu aktivieren, musst du zuerst einen Zugangscode eingerichtet haben.";
+
 /* Touch ID reason/explanation */
 "To unlock the application" = "Zum Entsperren der Anwendung";
 
@@ -638,12 +698,18 @@
 /* Offer to enable Touch ID support if available and passcode is on. */
 "Touch ID" = "Touch ID";
 
+/* Move selected notes to trash */
+"Trash Notes" = "Verschieben von Notizen in den Papierkorb";
+
 /* Title: Trash Tag is selected
    Trash filter button */
 "Trash-noun" = "Papierkorb";
 
 /* Prompt when disabling passcode */
 "Turn off Passcode" = "Passcode deaktivieren";
+
+/* Undo action */
+"Undo" = "Rückgängig";
 
 /* Unpins a note */
 "Unpin" = "Lösen";
@@ -653,6 +719,12 @@
 
 /* Publish Accessibility Hint */
 "Unpublish note" = "Veröffentlichung von Notiz rückgängig machen";
+
+/* Notice of publishing unsuccessful */
+"Unpublish successful" = "Vorgang zum Aufheben der Veröffentlichung erfolgreich";
+
+/* Notice of unpublishing action */
+"Unpublishing note..." = "Veröffentlichung der Notiz wird rückgängig gemacht …";
 
 /* Indicates the Note is being unpublished */
 "Unpublishing..." = "Veröffentlichung wird aufgehoben…";
@@ -728,6 +800,9 @@
 
 /* Search Operator for tags. Please preserve the semicolons when translating! */
 "tag:" = "Schlagwort:";
+
+/* Warning Title */
+"⚠️ Important" = "⚠️ Wichtig";
 
 /* Indicates that Extended Debugging has been enabled */
 "🐞 Debug Enabled 🐞" = "🐞 Fehlersuche aktiviert 🐞";

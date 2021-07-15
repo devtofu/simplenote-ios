@@ -1,1 +1,1 @@
-- VoiceOver now reads note contextual actions names correctly
+- Moved edit mode into a long press action and removed the new note bar

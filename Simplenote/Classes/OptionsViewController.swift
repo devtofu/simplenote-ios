@@ -5,7 +5,7 @@ import SimplenoteFoundation
 
 // MARK: - OptionsControllerDelegate
 //
-protocol OptionsControllerDelegate: class {
+protocol OptionsControllerDelegate: AnyObject {
     func optionsControllerDidPressHistory(_ sender: OptionsViewController)
     func optionsControllerDidPressShare(_ sender: OptionsViewController)
     func optionsControllerDidPressTrash(_ sender: OptionsViewController)
@@ -356,6 +356,7 @@ private extension OptionsViewController {
         SPTracker.trackEditorCopiedInternalLink()
         UIPasteboard.general.copyInternalLink(to: note)
         NoticeController.shared.present(NoticeFactory.linkCopied())
+        SPTracker.trackPresentedNotice(ofType: .internalLinkCopied)
         dismiss(animated: true, completion: nil)
     }
 
@@ -386,6 +387,7 @@ private extension OptionsViewController {
         SPTracker.trackEditorCopiedPublicLink()
         UIPasteboard.general.copyPublicLink(to: note)
         NoticeController.shared.present(NoticeFactory.linkCopied())
+        SPTracker.trackPresentedNotice(ofType: .publicLinkCopied)
         dismiss(animated: true, completion: nil)
     }
 

@@ -28,13 +28,13 @@ extension SPNoteListViewController {
         tableView.tableFooterView = UIView()
 
         tableView.layoutMargins = .zero
-        tableView.separatorInset = .zero
-        tableView.separatorInsetReference = .fromAutomaticInsets
-        tableView.separatorStyle = UIDevice.sp_isPad() ? .none : .singleLine
+        tableView.separatorStyle = .none
 
         tableView.register(SPNoteTableViewCell.loadNib(), forCellReuseIdentifier: SPNoteTableViewCell.reuseIdentifier)
         tableView.register(SPTagTableViewCell.loadNib(), forCellReuseIdentifier: SPTagTableViewCell.reuseIdentifier)
         tableView.register(SPSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: SPSectionHeaderView.reuseIdentifier)
+
+        tableView.allowsMultipleSelectionDuringEditing = true
     }
 
     /// Sets up the Results Controller
@@ -255,6 +255,16 @@ extension SPNoteListViewController {
         updatePlaceholderPosition()
     }
 
+    func refreshSelectAllLabels() {
+        let numberOfSelectedRows = tableView.indexPathsForSelectedRows?.count ?? 0
+        let deselect = notesListController.numberOfObjects == numberOfSelectedRows
+
+        selectAllButton.title = Localization.selectAllLabel(deselect: deselect)
+        selectAllButton.isAccessibilityElement = true
+        selectAllButton.accessibilityLabel = Localization.selectAllLabel(deselect: deselect)
+        selectAllButton.accessibilityHint = Localization.selectAllAccessibilityHint
+    }
+
     private var placeholderDisplayMode: SPPlaceholderView.DisplayMode {
         if isIndexingNotes || SPAppDelegate.shared().bSigningUserOut {
             return .generic
@@ -343,6 +353,60 @@ extension SPNoteListViewController {
         let isNotEmpty = !self.isListEmpty
 
         emptyTrashButton.isEnabled = isTrashOnScreen && isNotEmpty
+    }
+
+    /// Delete selected notes
+    ///
+    @objc
+    func trashSelectedNotes() {
+        guard let notes = tableView.indexPathsForSelectedRows?.compactMap({ notesListController.object(at: $0) as? Note }) else {
+            return
+        }
+
+        delete(notes: notes)
+        setEditing(false, animated: true)
+    }
+
+    /// Setup Navigation toolbar buttons
+    ///
+    @objc
+    func configureNavigationToolbarButton() {
+        // TODO: When multi select is added to iPad, revist the conditionals here
+        guard let trashButton = trashButton else {
+            return
+        }
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        setToolbarItems([flexibleSpace, trashButton], animated: true)
+    }
+
+    @objc
+    func selectAllWasTapped() {
+        if notesListController.numberOfObjects == tableView.indexPathsForSelectedRows?.count {
+            tableView.deselectAllRows(inSection: .zero, animated: false)
+        } else {
+            tableView.selectAllRows(inSection: 0, animated: false)
+        }
+        refreshNavigationBarLabels()
+        refreshTrashButton()
+    }
+
+    @objc
+    func refreshNavigationBarLabels() {
+        refreshListViewTitle()
+        refreshSelectAllLabels()
+    }
+
+    @objc
+    func refreshEditButtonTitle() {
+        editButtonItem.title = isEditing ? Localization.cancelTitle : Localization.editTitle
+    }
+
+    func refreshTrashButton() {
+        guard let selectedRows = tableView.indexPathsForSelectedRows else {
+            trashButton.isEnabled = false
+            return
+        }
+        trashButton.isEnabled = selectedRows.count > 0
     }
 }
 
@@ -495,6 +559,12 @@ extension SPNoteListViewController: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isEditing {
+            refreshNavigationBarLabels()
+            refreshTrashButton()
+            return
+        }
+
         selectedNote = nil
 
         switch notesListController.object(at: indexPath) {
@@ -506,11 +576,19 @@ extension SPNoteListViewController: UITableViewDelegate {
         default:
             break
         }
+
+    }
+
+    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if isEditing {
+            refreshNavigationBarLabels()
+            refreshTrashButton()
+        }
     }
 
     @available(iOS 13.0, *)
     public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard isDeletedFilterActive == false, let note = notesListController.object(at: indexPath) as? Note else {
+        guard isDeletedFilterActive == false, isEditing == false, let note = notesListController.object(at: indexPath) as? Note else {
             return nil
         }
 
@@ -518,7 +596,7 @@ extension SPNoteListViewController: UITableViewDelegate {
             return self.previewingViewController(for: note)
 
         }, actionProvider: { suggestedActions in
-            return self.contextMenu(for: note)
+            return self.contextMenu(for: note, at: indexPath)
         })
     }
 
@@ -535,9 +613,16 @@ extension SPNoteListViewController: UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? SPNoteTableViewCell else {
+            return
+        }
+
         var insets = SPNoteTableViewCell.separatorInsets
         insets.left -= cell.layoutMargins.left
+
         cell.separatorInset = insets
+
+        cell.shouldDisplayBottomSeparator = indexPath.row < notesListController.numberOfObjects - 1 && !UIDevice.isPad
     }
 }
 
@@ -622,6 +707,45 @@ extension SPNoteListViewController {
             notesListController.object(at: indexPath) as? Note
         }
     }
+
+    open override func setEditing(_ editing: Bool, animated: Bool) {
+        ensureTableViewEditingIsInSync()
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+        refreshEditButtonTitle()
+        refreshSelectAllLabels()
+
+        tableView.deselectAllRows(inSection: .zero, animated: false)
+        updateNavigationBar()
+
+        configureNavigationToolbarButton()
+        navigationController?.setToolbarHidden(!editing, animated: true)
+        refreshListViewTitle()
+        searchController.setEnabled(!editing)
+    }
+
+    private func ensureTableViewEditingIsInSync() {
+        // If a swipe action is active, the tableView will already be set to isEditing == true
+        // The edit button is still active while the swipe actions are active, if pressed
+        // the VC and the tableview will get set to true, but since the tableView is already
+        // editing nothind will happen.
+        // This method ensures the tableview and VC are in sync when the edit button is tapped
+        guard tableView.isEditing != isEditing else {
+            return
+        }
+        tableView.setEditing(isEditing, animated: false)
+    }
+
+    private func refreshListViewTitle() {
+        title = {
+            guard isEditing else {
+                return notesListController.filter.title
+            }
+
+            let count = tableView.indexPathsForSelectedRows?.count ?? .zero
+            return count > 0 ? Localization.selectedTitle(with: count) : notesListController.filter.title
+        }()
+    }
 }
 
 // MARK: - Row Actions
@@ -637,47 +761,62 @@ private extension SPNoteListViewController {
     }
 
     func deletedContextActions(for note: Note) -> [UIContextualAction] {
-        return [
-            UIContextualAction(style: .normal, image: .image(name: .restore), backgroundColor: .simplenoteRestoreActionColor) { (_, _, completion) in
+
+        let restoreAction = UIContextualAction(style: .normal, image: .image(name: .restore), backgroundColor: .simplenoteRestoreActionColor) { (_, _, completion) in
                 SPObjectManager.shared().restoreNote(note)
                 CSSearchableIndex.default().indexSearchableNote(note)
                 completion(true)
-            },
+            }
+        restoreAction.accessibilityLabel = ActionTitle.restore
 
-            UIContextualAction(style: .destructive, image: .image(name: .trash), backgroundColor: .simplenoteDestructiveActionColor) { (_, _, completion) in
+        let deleteAction = UIContextualAction(style: .destructive, image: .image(name: .trash), backgroundColor: .simplenoteDestructiveActionColor) { (_, _, completion) in
                 SPTracker.trackListNoteDeleted()
                 SPObjectManager.shared().permenentlyDeleteNote(note)
                 completion(true)
             }
-        ]
+        deleteAction.accessibilityLabel = ActionTitle.delete
+
+        return [restoreAction, deleteAction]
     }
 
     func regularContextActions(for note: Note) -> [UIContextualAction] {
         let pinImageName: UIImageName = note.pinned ? .unpin : .pin
         let pinActionTitle: String = note.pinned ? ActionTitle.unpin : ActionTitle.pin
 
-        return [
-            UIContextualAction(style: .destructive, title: ActionTitle.delete, image: .image(name: .trash), backgroundColor: .simplenoteDestructiveActionColor) { [weak self] (_, _, completion) in
+        let trashAction = UIContextualAction(style: .destructive, title: nil, image: .image(name: .trash), backgroundColor: .simplenoteDestructiveActionColor) { [weak self] (_, _, completion) in
                 self?.delete(note: note)
+                NoticeController.shared.present(NoticeFactory.noteTrashed(onUndo: {
+                    SPObjectManager.shared().restoreNote(note)
+                    SPTracker.trackPreformedNoticeAction(ofType: .noteTrashed, noticeType: .undo)
+                    self?.tableView.reloadData()
+                }))
+                SPTracker.trackPresentedNotice(ofType: .noteTrashed)
                 completion(true)
-            },
+        }
+        trashAction.accessibilityLabel = ActionTitle.trash
 
-            UIContextualAction(style: .normal, title: pinActionTitle, image: .image(name: pinImageName), backgroundColor: .simplenoteSecondaryActionColor) { [weak self] (_, _, completion) in
+        let pinAction = UIContextualAction(style: .normal, title: nil, image: .image(name: pinImageName), backgroundColor: .simplenoteSecondaryActionColor) { [weak self] (_, _, completion) in
                 self?.togglePinnedState(note: note)
                 completion(true)
-            },
+            }
+        pinAction.accessibilityLabel = pinActionTitle
 
-            UIContextualAction(style: .normal, title: ActionTitle.copyLink, image: .image(name: .link), backgroundColor: .simplenoteTertiaryActionColor) { [weak self] (_, _, completion) in
+        let copyAction = UIContextualAction(style: .normal, title: nil, image: .image(name: .link), backgroundColor: .simplenoteTertiaryActionColor) { [weak self] (_, _, completion) in
                 self?.copyInternalLink(to: note)
                 NoticeController.shared.present(NoticeFactory.linkCopied())
+            SPTracker.trackPresentedNotice(ofType: .internalLinkCopied)
                 completion(true)
-            },
+            }
+        copyAction.accessibilityLabel = ActionTitle.copyLink
 
-            UIContextualAction(style: .normal, title: ActionTitle.share, image: .image(name: .share), backgroundColor: .simplenoteQuaternaryActionColor) { [weak self] (_, _, completion) in
+        let shareAction = UIContextualAction(style: .normal, title: nil, image: .image(name: .share), backgroundColor: .simplenoteQuaternaryActionColor) { [weak self] (_, _, completion) in
                 self?.share(note: note)
                 completion(true)
             }
-        ]
+        shareAction.accessibilityLabel = ActionTitle.share
+
+
+        return [trashAction, pinAction, copyAction, shareAction]
     }
 }
 
@@ -689,10 +828,11 @@ private extension SPNoteListViewController {
 
     /// Invoked by the Long Press UITableView Mechanism (ex 3d Touch)
     ///
-    func contextMenu(for note: Note) -> UIMenu {
+    func contextMenu(for note: Note, at indexPath: IndexPath) -> UIMenu {
         let copy = UIAction(title: ActionTitle.copyLink, image: .image(name: .link)) { [weak self] _ in
             self?.copyInternalLink(to: note)
             NoticeController.shared.present(NoticeFactory.linkCopied())
+            SPTracker.trackPresentedNotice(ofType: .internalLinkCopied)
         }
 
         let share = UIAction(title: ActionTitle.share, image: .image(name: .share)) { [weak self] _ in
@@ -704,6 +844,17 @@ private extension SPNoteListViewController {
             self?.togglePinnedState(note: note)
         }
 
+        let select = UIAction(title: ActionTitle.select, image: .image(name: .success)) { [weak self] _ in
+            self?.setEditing(true, animated: true)
+            self?.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            self?.tableView.scrollToNearestSelectedRow(at: .none, animated: false)
+            self?.refreshListViewTitle()
+            self?.refreshTrashButton()
+        }
+        if isSearchActive {
+            select.attributes = .disabled
+        }
+
         /// NOTE:
         /// iOS 13 exhibits a broken animation when performing a Delete OP from a ContextMenu.
         /// Since this appears to be fixed in iOS 14, quick workaround is: remove Delete from the Contextual Actions for iOS 13.
@@ -711,14 +862,20 @@ private extension SPNoteListViewController {
         /// Ref.: https://github.com/Automattic/simplenote-ios/pull/902/files
         ///
         guard #available(iOS 14.0, *) else {
-            return UIMenu(title: "", children: [share, copy, pin])
+            return UIMenu(title: "", children: [select, share, copy, pin])
         }
 
         let delete = UIAction(title: ActionTitle.delete, image: .image(name: .trash), attributes: .destructive) { [weak self] _ in
             self?.delete(note: note)
+            NoticeController.shared.present(NoticeFactory.noteTrashed(onUndo: {
+                SPObjectManager.shared().restoreNote(note)
+                SPTracker.trackPreformedNoticeAction(ofType: .noteTrashed, noticeType: .undo)
+                self?.tableView.reloadData()
+            }))
+            SPTracker.trackPresentedNotice(ofType: .noteTrashed)
         }
 
-        return UIMenu(title: "", children: [share, copy, pin, delete])
+        return UIMenu(title: "", children: [select, share, copy, pin, delete])
     }
 }
 
@@ -730,9 +887,6 @@ private extension SPNoteListViewController {
         SPTracker.trackListNoteDeleted()
         SPObjectManager.shared().trashNote(note)
         CSSearchableIndex.default().deleteSearchableNote(note)
-        NoticeController.shared.present(NoticeFactory.noteTrashed(note, onUndo: {
-            SPObjectManager.shared().restoreNote(note)
-        }))
     }
 
     func copyInternalLink(to note: Note) {
@@ -773,6 +927,22 @@ private extension SPNoteListViewController {
         editorViewController.update(withSearchQuery: searchQuery)
 
         return editorViewController
+    }
+
+    func delete(notes: [Note]) {
+        for note in notes {
+            delete(note: note)
+        }
+
+        NoticeController.shared.present(NoticeFactory.notesTrashed(notes, onUndo: {
+            for note in notes {
+                SPObjectManager.shared().restoreNote(note)
+            }
+            SPTracker.trackPreformedNoticeAction(ofType: .multipleNotesTrashed, noticeType: .undo)
+        }))
+        SPTracker.trackPresentedNotice(ofType: .multipleNotesTrashed)
+
+        setEditing(false, animated: true)
     }
 }
 
@@ -936,10 +1106,13 @@ private extension SPNoteListViewController {
 private enum ActionTitle {
     static let cancel = NSLocalizedString("Cancel", comment: "Dismissing an interface")
     static let copyLink = NSLocalizedString("Copy Internal Link", comment: "Copies Link to a Note")
-    static let delete = NSLocalizedString("Move to Trash", comment: "Deletes a note")
+    static let trash = NSLocalizedString("Move to Trash", comment: "Deletes a note")
     static let pin = NSLocalizedString("Pin to Top", comment: "Pins a note")
     static let share = NSLocalizedString("Share...", comment: "Shares a note")
     static let unpin = NSLocalizedString("Unpin", comment: "Unpins a note")
+    static let restore = NSLocalizedString("Restore Note", comment: "Restore a note from trash")
+    static let delete = NSLocalizedString("Delete Note", comment: "Delete a note from trash")
+    static let select = NSLocalizedString("Select", comment: "Select multiple notes at once")
 }
 
 private enum Constants {
@@ -983,4 +1156,21 @@ private enum Localization {
             return String(format: NSLocalizedString("Create a new note titled “%@”", comment: "Tappable message shown when no notes match a search string. Parameter: %@ - search term"), searchTerm)
         }
     }
+
+    static func selectedTitle(with count: Int) -> String {
+        let string = NSLocalizedString("%i Selected", comment: "Count of currently selected notes")
+        return String(format: string, count)
+    }
+
+    static func selectAllLabel(deselect: Bool) -> String {
+        let selectLabel = NSLocalizedString("Select All", comment: "Select all Button Label")
+        let deselectLabel = NSLocalizedString("Deselect All", comment: "Deselect all Button Label")
+        return deselect ? deselectLabel : selectLabel
+    }
+
+    static let selectAllAccessibilityHint = NSLocalizedString("Tap button to select or deselect all notes", comment: "Accessibility hint for the select/deselect all button")
+
+    static let editTitle = NSLocalizedString("Edit", comment: "Edit button title")
+
+    static let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button title")
 }

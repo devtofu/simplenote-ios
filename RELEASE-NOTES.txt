@@ -1,5 +1,34 @@
+4.41
+-----
+
+
+4.40
+-----
+-   Some bug fixes #1345, #1347, #1348
+
+4.39
+-----
+-   Moved edit mode into a long press action and removed the new note bar #1328
+
+4.38
+-----
+
+-   Fixed a bug in which the New Note button might not appear #1298
+-   New Biometry Lock Flow #1299
+
+4.37
+-----
+-   Update in-app notifications color for better readability in dark mode #1288
+-   Added the ability to select and delete multiple notes at a time from the note list  #1267
+
 4.36
 -----
+-   New Note Bar #1246
+-   Fixed an occasional issue with the contextual menu rendering #1258
+-   Removed all caps from collaboration alert title #1260
+-   Fixed issue where notices wouldn't be shown in some cases #1262
+-   Fixed an issue where tags would not be deleted on trashed notes #1268
+-   Improved dynamic font size support in notices #1278
 
 
 4.35

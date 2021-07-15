@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2021-03-16 14:54:03+0000 */
+/* Translation-Revision-Date: 2021-06-29 11:32:19+0000 */
 /* Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2); */
 /* Generator: GlotPress/2.4.0-alpha */
 /* Language: ru */
@@ -15,11 +15,20 @@
 /* Number of failed entries entering in passcode */
 "%i Failed Passcode Attempts" = "Неудачные попытки ввода кода доступа: %i";
 
+/* Note trashed notification */
+"%i Note Trashed" = "%i Заметка перемещена в корзину";
+
+/* Notes trashed notification */
+"%i Notes Trashed" = "Заметки (%i) перемещены в корзину.";
+
 /* Count of interlink references to a note */
 "%i Reference" = "%i Указатель";
 
 /* Count of interlink references to a note */
 "%i References" = "%i Ссылки";
+
+/* Count of currently selected notes */
+"%i Selected" = "%i Выбрано";
 
 /* Password Requirement: Length */
 "- Minimum of 8 characters" = "— Не менее 8 символов";
@@ -77,6 +86,9 @@
 /* Sign in error message */
 "An error was encountered while signing in." = "Во время входа произошла ошибка.";
 
+/* Engine URL Message */
+"AppEngine Endpoints" = "Конечные точки AppEngine";
+
 /* No comment provided by engineer. */
 "Appearance" = "Внешний вид";
 
@@ -92,6 +104,9 @@
 /* User Authenticated */
 "Authenticated" = "Прошедший проверку";
 
+/* Engine URL Message */
+"Authentication Endpoints" = "Конечные точки аутентификации";
+
 /* The Simplenote blog */
 "Blog" = "Блог";
 
@@ -99,6 +114,8 @@
 "By creating an account you agree to our" = "Создавая учетную запись, вы принимаете наши";
 
 /* Cancel Action
+   Cancel action button
+   Cancel button title
    Cancellation button of deletion confirmation message for a tag.
    Dismissing an interface
    PinLock screen \"cancel\" button
@@ -126,7 +143,7 @@
 /* Opens the Collaborate UI */
 "Collaborate" = "Партнер";
 
-/* No comment provided by engineer. */
+/* Alert title that collaboration has moved */
 "Collaboration has moved" = "Раздел совместной работы перенесен";
 
 /* Noun - collaborators are other Simplenote users who you chose to share a note with */
@@ -150,6 +167,9 @@
 
 /* Copies the Note's Public Link */
 "Copy Link" = "Копировать ссылку";
+
+/* Copy link action */
+"Copy link" = "Скопировать ссылку";
 
 /* Rating view - initial - could be better button */
 "Could be better" = "Нужно доработать";
@@ -206,17 +226,23 @@
 /* PinLock screen \"delete\" button */
 "Delete" = "Удалить";
 
+/* Delete a note from trash */
+"Delete Note" = "Удалить заметку";
+
 /* Verb: Delete notes and log out of the app */
 "Delete Notes" = "Удалить заметки";
 
 /* Confirmation button of deletion confirmation message for a tag. */
 "Delete Tag" = "Удалить метку";
 
+/* Deselect all Button Label */
+"Deselect All" = "Снять выделение";
+
 /* Title displayed in the extended diagnostics UI */
 "Diagnostics" = "Диагностика";
 
 /* Footer -> Sign up verification screen. Parameter: %1$@ - support email address */
-"Didn't get an email? You may already have an account. Contact %1$@ for help." = "Письмо не пришло? Возможно, у вас уже есть учётная запись. Обратитесь за помощью по адресу %1$@.";
+"Didn't get an email? There may already be an account associated with this email address. Contact %1$@ for help." = "Письмо не пришло? С этим адресом электронной почты уже может быть связана учетная запись. Обратитесь за помощью по адресу %1$@.";
 
 /* Markdown Accessibility Hint */
 "Disable Markdown formatting" = "Выключить форматирование Markdown";
@@ -239,7 +265,8 @@
    Done toolbar button */
 "Done" = "Готово";
 
-/* Edit Tags Action: Visible in the Tags List */
+/* Edit button title
+   Edit Tags Action: Visible in the Tags List */
 "Edit" = "Редактирование";
 
 /* Email TextField Placeholder */
@@ -323,6 +350,9 @@
 /* Theme: Light */
 "Light" = "Светлая";
 
+/* Link Copied alert */
+"Link copied" = "Ссылка скопирована";
+
 /* Setting for when the passcode lock should enable */
 "Lock Timeout" = "Время до блокировки";
 
@@ -368,6 +398,9 @@
 /* Sort Mode: Modified Date, ascending */
 "Modified: Oldest" = "Дата изменения: сначала старые";
 
+/* Accessibility hint for trash selected notes button */
+"Move selected notes to trash" = "Перемещение выбранных заметок в корзину";
+
 /* Delete Action
    Deletes a note */
 "Move to Trash" = "Удалить";
@@ -406,10 +439,14 @@
 /* Message shown in note list when no notes are untagged */
 "No untagged notes" = "Нет заметок без тегов";
 
+/* Note trashed notification */
+"Note Trashed" = "Заметка перемещена в корзину";
+
 /* Notes Header (Search Mode) */
 "Notes" = "Заметки";
 
-/* Closes alert controller for spinner on About view
+/* Alert confirmation button title
+   Closes alert controller for spinner on About view
    Dismisses an AlertController */
 "OK" = "Хорошо";
 
@@ -483,8 +520,14 @@
 /* Publishes a Note to the Web */
 "Publish" = "Публикация";
 
+/* Notice up succesful publishing */
+"Publish Successful" = "Публикация успешно выполнена";
+
 /* Publish Accessibility Hint */
 "Publish note" = "Публикация заметки";
+
+/* Notice of publishing action */
+"Publishing note..." = "Публикация заметки...";
 
 /* Indicates the Note is being published */
 "Publishing..." = "Публикация…";
@@ -519,7 +562,8 @@
 /* Response Title */
 "Response" = "Ответ";
 
-/* Restore a note to a previous version */
+/* Restore a note from trash
+   Restore a note to a previous version */
 "Restore Note" = "Восстановить заметку";
 
 /* Title -> Review you account screen */
@@ -540,6 +584,13 @@
 /* No comment provided by engineer. */
 "Security" = "Безопасность";
 
+/* Select multiple notes at once */
+"Select" = "Выбор";
+
+/* Select all Button Label
+   Select all button title */
+"Select All" = "Выбрать Все";
+
 /* Accessibility label describing a slider used to reset the current note to a previous version */
 "Select a Version" = "Выбрать версию";
 
@@ -548,6 +599,9 @@
 
 /* Rating view - disliked - send feedback button */
 "Send feedback" = "Отправить отзыв";
+
+/* Setup a passcode action button */
+"Set up Passcode" = "Установить код доступа";
 
 /* Settings button
    Title of options screen */
@@ -563,7 +617,7 @@
 /* Shares a note */
 "Share..." = "Поделиться...";
 
-/* No comment provided by engineer. */
+/* Alert message that collaboration has moved */
 "Sharing notes is now accessed through the action menu from the toolbar." = "Функция отправки заметок теперь находится в меню действий на панели инструментов.";
 
 /* UI region to the left of the note list which shows all of a users tags */
@@ -605,6 +659,9 @@
 /* Tags List Header */
 "Tags" = "Метки";
 
+/* Accessibility hint for the select/deselect all button */
+"Tap button to select or deselect all notes" = "Нажмите кнопку, чтобы выбрать все заметки или снять выделение";
+
 /* Terms of Service Legend *SUFFIX*: Concatenated with a space, after the PREFIX, and printed in blue */
 "Terms and Conditions" = "Правила и условия";
 
@@ -623,6 +680,9 @@
 /* Simplenote Themes */
 "Themes" = "Темы";
 
+/* Prompt to setup passcode before biomtery lock. Parameters: %1$@ - biometry type (Face ID or Touch ID */
+"To enable %1$@, you must have a passcode setup first." = "Чтобы включить %1$@, сначала установите код доступа.";
+
 /* Touch ID reason/explanation */
 "To unlock the application" = "Для разблокировки приложения";
 
@@ -638,12 +698,18 @@
 /* Offer to enable Touch ID support if available and passcode is on. */
 "Touch ID" = "Идентификатор прикосновения";
 
+/* Move selected notes to trash */
+"Trash Notes" = "Переместить заметки в корзину";
+
 /* Title: Trash Tag is selected
    Trash filter button */
 "Trash-noun" = "Корзина";
 
 /* Prompt when disabling passcode */
 "Turn off Passcode" = "Отключить пароль";
+
+/* Undo action */
+"Undo" = "Назад";
 
 /* Unpins a note */
 "Unpin" = "Открепить";
@@ -653,6 +719,12 @@
 
 /* Publish Accessibility Hint */
 "Unpublish note" = "Не публиковать заметку";
+
+/* Notice of publishing unsuccessful */
+"Unpublish successful" = "Публикация успешно отменена";
+
+/* Notice of unpublishing action */
+"Unpublishing note..." = "Отмена публикации...";
 
 /* Indicates the Note is being unpublished */
 "Unpublishing..." = "Отмена публикации…";
@@ -728,6 +800,9 @@
 
 /* Search Operator for tags. Please preserve the semicolons when translating! */
 "tag:" = "метка:";
+
+/* Warning Title */
+"⚠️ Important" = "⚠️ Важно";
 
 /* Indicates that Extended Debugging has been enabled */
 "🐞 Debug Enabled 🐞" = "🐞 Отладка включена 🐞";

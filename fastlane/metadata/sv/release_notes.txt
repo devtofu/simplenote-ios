@@ -1,1 +1,1 @@
-– VoiceOver läser nu namn för sammanhangsåtgärder korrekt
+- Redigeringsläget har flyttats till en lång tryckning och fältet för nya anteckningar ha tagits bort

@@ -61,13 +61,13 @@ msgid ""
 msgstr ""
 
 #. translators: Keywords used in the App Store search engine to find the app.
-#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+#. Delimit with an English comma between each keyword. Limit to 100 characters including spaces and commas.
 msgctxt "app_store_keywords"
-msgid "simplenote,note,taking,taker,notes,sync,share,simple,markdown,tag,to-do,list,lock,cloud,writing"
+msgid "notes,cloud,simple,notebook,text,to-do,todo,planner,journal,diary,sync,notepad,tag,writing,memo"
 msgstr ""
 
-msgctxt "v4.34-whats-new"
+msgctxt "v4.40-whats-new"
 msgid ""
-"- VoiceOver now reads note contextual actions names correctly\n"
+"-   Some bug fixes #1345, #1347, #1348\n"
+"\n"
 msgstr ""
-

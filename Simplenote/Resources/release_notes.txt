@@ -1,3 +1,2 @@
-- Simplenote's Icons have been revamped
-- Added in app notifications to alert users of different activities in the app
-- Changed search sort settings to use the general sort setting.
+-   Some bug fixes #1345, #1347, #1348
+

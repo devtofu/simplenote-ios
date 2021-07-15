@@ -35,9 +35,20 @@ enum UID {
         static let noteEditorInformation = "Information"
         static let noteEditorMenu = "note-menu"
         static let itemTrash = "icon trash"
-        static let noteTrash = "Move to Trash"
-        static let trashRestore = "icon restore"
-        static let trashEmptyTrash = "Empty"
+        static let trashNote = "Move to Trash"
+        static let restoreNote = "Restore Note"
+        static let deleteNote = "Delete Note"
+      
+        // "Empty Trash" button label is generated
+        // differently by Xcode 12.4 and 12.5 (runs iOS 14.5+)
+        static private(set) var trashEmptyTrash: String = {
+            if #available(iOS 14.5, *) {
+                return "Empty trash"
+            } else {
+                return "Empty"
+            }
+        }()
+
         static let clearText = "Clear text"
         static let cancel = "Cancel"
         static let dismissKeyboard = "Dismiss keyboard"
@@ -72,5 +83,5 @@ enum Text {
     static let loginPasswordShort = "Password must contain at least 4 characters"
 }
 
-let testDataExistingEmail = "simplenoteuitest@mailinator.com"
-let testDataExistingPassword = "qazxswedc"
+let testDataEmail = "simplenoteuitest@mailinator.com"
+let testDataPassword = "qazxswedc"
